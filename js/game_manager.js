@@ -10,6 +10,7 @@ function GameManager(size, InputManager, Actuator, ScoreManager) {
   this.inputManager.on("restart", this.restart.bind(this));
   this.inputManager.on("keepPlaying", this.keepPlaying.bind(this));
   this.inputManager.on("change", this.change.bind(this));
+  this.inputManager.on("best", this.best.bind(this));
 
   this.setup();
 }
@@ -187,6 +188,12 @@ GameManager.prototype.change = function(space) {
     }
 
     this.actuate();
+};
+
+GameManager.prototype.best = function () {
+    var self = this;
+    
+
 };
 
 // Get the vector representing the chosen direction

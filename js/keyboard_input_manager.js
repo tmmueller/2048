@@ -71,7 +71,11 @@ KeyboardInputManager.prototype.listen = function () {
     var mapped    = map[event.which];
 
     if (!modifiers) {
-      if (mapped !== undefined) {
+        if (event.which === 66) { // B
+            self.emit("best");
+        }
+
+        if (mapped !== undefined) {
         event.preventDefault();
 
         if (mapped < 4) {
