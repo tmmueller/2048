@@ -164,24 +164,13 @@ GameManager.prototype.move = function (direction) {
   }
 };
 
-// save the current positions of all cells
-GameManager.prototype.saveAllPositions = function () {
-    var self = this;
-
-    self.grid.eachCell(function (x, y, tile) {
-        if (tile) {
-            tile.savePosition();
-        }
-    });
-};
-
 GameManager.prototype.change = function(space) {
     var self = this;
 
     var cell = { x: space % 10 - 1, y: Math.floor(space / 10) - 1 };
     var tile = self.grid.cellContent(cell);
 
-    self.saveAllPositions();
+    self.prepareTiles();
 
     // if there is no tile, create one with value 2
     if (!tile) {
