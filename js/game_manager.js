@@ -164,11 +164,42 @@ GameManager.prototype.move = function (direction) {
   }
 };
 
+// save the current positions of all cells
+GameManager.prototype.saveAllPositions = function () {
+    var self = this;
+
+    self.grid.eachCell(function (x, y, tile) {
+        if (tile) {
+            tile.savePosition();
+        }
+    });
+};
+
 GameManager.prototype.change = function(space) {
     var self = this;
 
-    cell = { x: space % 10 - 1, y: Math.floor(space / 10) - 1 };
-    tile = self.grid.cellContent(cell);
+    var cell = { x: space % 10 - 1, y: Math.floor(space / 10) - 1 };
+    var tile = self.grid.cellContent(cell);
+
+    self.saveAllPositions();
+
+    // if there is no tile, create one with value 2
+    if (!tile) {
+        tile = new Tile(cell, 2);
+        self.grid.insertTile(tile);
+    }
+
+    // if it's a 1024, get rid of it
+    else if (tile.value === 1024) {
+        self.grid.removeTile(tile);
+    }
+
+    // otherwise, give it the next value
+    else {
+        tile.value *= 2;
+    }
+
+    this.actuate();
 }
 
 // Get the vector representing the chosen direction
