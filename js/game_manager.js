@@ -9,6 +9,7 @@ function GameManager(size, InputManager, Actuator, ScoreManager) {
   this.inputManager.on("move", this.move.bind(this));
   this.inputManager.on("restart", this.restart.bind(this));
   this.inputManager.on("keepPlaying", this.keepPlaying.bind(this));
+  this.inputManager.on("change", this.change.bind(this));
 
   this.setup();
 }
@@ -162,6 +163,13 @@ GameManager.prototype.move = function (direction) {
     this.actuate();
   }
 };
+
+GameManager.prototype.change = function(space) {
+    var self = this;
+
+    cell = { x: space % 10 - 1, y: Math.floor(space / 10) - 1 };
+    tile = self.grid.cellContent(cell);
+}
 
 // Get the vector representing the chosen direction
 GameManager.prototype.getVector = function (direction) {

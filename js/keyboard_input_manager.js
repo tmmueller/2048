@@ -39,14 +39,30 @@ KeyboardInputManager.prototype.listen = function () {
     39: 1, // Right
     40: 2, // Down
     37: 3, // Left
-    75: 0, // vim keybindings
-    76: 1,
-    74: 2,
-    72: 3,
-    87: 0, // W
-    68: 1, // D
-    83: 2, // S
-    65: 3  // A
+
+    // 1-4: top row
+    49: 11,
+    50: 12,
+    51: 13,
+    52: 14,
+
+    // Q-R: 2nd row
+    81: 21,
+    87: 22,
+    69: 23,
+    82: 24,
+
+    // A-F: 3rd row
+    65: 31,
+    83: 32,
+    68: 33,
+    70: 34,
+
+    // Z-V: 4th row
+    90: 41,
+    88: 42,
+    67: 43,
+    86: 44
   };
 
   document.addEventListener("keydown", function (event) {
@@ -57,7 +73,13 @@ KeyboardInputManager.prototype.listen = function () {
     if (!modifiers) {
       if (mapped !== undefined) {
         event.preventDefault();
-        self.emit("move", mapped);
+
+        if (mapped < 4) {
+          self.emit("move", mapped);
+        }
+        else {
+          self.emit("change", mapped);
+        }
       }
 
       if (event.which === 32) self.restart.bind(self)(event);
