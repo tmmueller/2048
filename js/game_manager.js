@@ -165,6 +165,7 @@ GameManager.prototype.move = function (direction) {
   }
 };
 
+// increment the value of the tile at a given position
 GameManager.prototype.change = function(space) {
     var self = this;
 
@@ -190,10 +191,15 @@ GameManager.prototype.change = function(space) {
     this.actuate();
 };
 
+GameManager.prototype.findBestMove = function(grid) {
+    grid.alertSelf();
+};
+
+// find the best move
 GameManager.prototype.best = function () {
     var self = this;
-    
 
+    var bestMove = self.findBestMove(self.grid.clone());
 };
 
 // Get the vector representing the chosen direction

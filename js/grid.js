@@ -82,3 +82,23 @@ Grid.prototype.withinBounds = function (position) {
   return position.x >= 0 && position.x < this.size &&
          position.y >= 0 && position.y < this.size;
 };
+
+Grid.prototype.clone = function() {
+    var newGrid = new Grid(this.size);
+    this.eachCell(function(x, y, oldTile) {
+        if (oldTile) {
+            var newTile = new Tile(oldTile, oldTile.value);
+            newGrid.insertTile(newTile);
+        }
+    });
+
+    return newGrid;
+};
+
+Grid.prototype.alertSelf = function() {
+    this.eachCell(function(x, y, tile) {
+        if (tile) {
+            alert(x + " " + y);
+        }
+    });
+}
