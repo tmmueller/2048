@@ -1,4 +1,4 @@
-function GameManager(size, InputManager, Actuator, ScoreManager) {
+function GameManager(size, InputManager, Actuator, ScoreManager, grid, score) {
   this.size         = size; // Size of the grid
   this.inputManager = new InputManager;
   this.scoreManager = new ScoreManager;
@@ -6,13 +6,24 @@ function GameManager(size, InputManager, Actuator, ScoreManager) {
 
   this.startTiles   = 2;
 
-  this.inputManager.on("move", this.move.bind(this));
-  this.inputManager.on("restart", this.restart.bind(this));
-  this.inputManager.on("keepPlaying", this.keepPlaying.bind(this));
-  this.inputManager.on("change", this.change.bind(this));
-  this.inputManager.on("best", this.best.bind(this));
+    if (grid) {
+        this.grid = grid;
+        this.score = score;
+    }
+    else {
+        this.inputManager.on("move", this.move.bind(this));
+        this.inputManager.on("restart", this.restart.bind(this));
+        this.inputManager.on("keepPlaying", this.keepPlaying.bind(this));
+        this.inputManager.on("change", this.change.bind(this));
+        this.inputManager.on("best", this.best.bind(this));
 
-  this.setup();
+        this.setup();
+    }
+
+    this.over = false;
+    this.won = false;
+    this.keepPlaying = false;
+
 }
 
 // Restart the game
@@ -40,9 +51,6 @@ GameManager.prototype.setup = function () {
   this.grid        = new Grid(this.size);
 
   this.score       = 0;
-  this.over        = false;
-  this.won         = false;
-  this.keepPlaying = false;
 
   // Add the initial tiles
   this.addStartTiles();
@@ -60,6 +68,7 @@ GameManager.prototype.addStartTiles = function () {
 
 // Adds a tile in a random position
 GameManager.prototype.addRandomTile = function () {
+    return; // don't do anything
   if (this.grid.cellsAvailable()) {
     var value = Math.random() < 0.9 ? 2 : 4;
     var tile = new Tile(this.grid.randomAvailableCell(), value);
@@ -102,11 +111,12 @@ GameManager.prototype.moveTile = function (tile, cell) {
 };
 
 // Move tiles on the grid in the specified direction
+// returns true if the move was successful
 GameManager.prototype.move = function (direction) {
   // 0: up, 1: right, 2:down, 3: left
   var self = this;
 
-  if (this.isGameTerminated()) return; // Don't do anything if the game's over
+  if (this.isGameTerminated()) return false; // Don't do anything if the game's over
 
   var cell, tile;
 
@@ -163,6 +173,7 @@ GameManager.prototype.move = function (direction) {
 
     this.actuate();
   }
+    return moved;
 };
 
 // increment the value of the tile at a given position
@@ -191,15 +202,100 @@ GameManager.prototype.change = function(space) {
     this.actuate();
 };
 
-GameManager.prototype.findBestMove = function(grid) {
-    grid.alertSelf();
+GameManager.prototype.clone = function () {
+    function FakeInputManager() {
+    };
+
+    function FakeActuator() {
+    };
+
+    FakeActuator.prototype.actuate = function() {
+    };
+
+    function FakeScoreManager() {
+    };
+
+    FakeScoreManager.prototype.get = function () {
+        // pretend we have the max possible score so it never wants to save
+        return Number.MAX_VALUE;
+    };
+
+    var newGameManager = new GameManager(this.size, FakeInputManager, FakeActuator, FakeScoreManager, this.grid.clone(), this.score);
+    
+    return newGameManager;
+};
+
+GameManager.prototype.findBestMove = function (depth) {
+    var bestDirection = -1;
+    var bestScore = Number.MIN_VALUE;
+
+    for (var direction = 0; direction < 4; direction++) {
+        var newGame = this.clone();
+        var moved = newGame.move(direction);
+        if (moved) {
+            var score;
+
+            if (newGame.won) {
+                score = Number.MAX_VALUE - 1; // avoid overflow
+            }
+            else if (newGame.over || depth === 0) {
+                score = newGame.score;
+            }
+            else {
+                var availableCells = newGame.grid.availableCells();
+
+                // look at a subset of the cells
+                if (availableCells.length > 3) {
+                    availableCells = [
+                        availableCells[0],
+                        availableCells[Math.floor(availableCells.length / 2)],
+                        availableCells[availableCells.length - 1]];
+                }
+
+                score = 0;
+                for (var randomCellIndex = 0; randomCellIndex < availableCells.length; randomCellIndex++) {
+                    // get the score if the new tile is a 2
+                    var anotherNewGame = newGame.clone();
+                    var newTile = new Tile(availableCells[randomCellIndex], 2);
+                    anotherNewGame.grid.insertTile(newTile);
+                    score += 0.9 / availableCells.length * anotherNewGame.findBestMove(depth - 1).bestScore;
+
+                    // get the score if the new tile is a 4
+                    var anotherNewGame = newGame.clone();
+                    var newTile = new Tile(availableCells[randomCellIndex], 4);
+                    anotherNewGame.grid.insertTile(newTile);
+                    score += 0.1 / availableCells.length * anotherNewGame.findBestMove(depth - 1).bestScore;
+                }
+            }
+
+            if (score > bestScore) {
+                bestDirection = direction;
+                bestScore = score;
+            }
+        }
+
+        if (bestScore > Number.MAX_VALUE - 2) {
+            break;
+        }
+    }
+
+    return { bestScore: bestScore, bestDirection: bestDirection };
 };
 
 // find the best move
 GameManager.prototype.best = function () {
     var self = this;
 
-    var bestMove = self.findBestMove(self.grid.clone());
+    var bestMove = self.findBestMove(4);
+
+    var map = {
+        0: 'up',
+        1: 'right',
+        2: 'down',
+        3: 'left'
+    };
+
+    alert(map[bestMove.bestDirection] + ": " + bestMove.bestScore);
 };
 
 // Get the vector representing the chosen direction

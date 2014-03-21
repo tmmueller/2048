@@ -14,80 +14,110 @@
   <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0, maximum-scale=1, user-scalable=no, minimal-ui">
 </head>
 <body>
-  <div class="container">
-    <div class="heading">
-      <h1 class="title">2048</h1>
-      <div class="scores-container">
-        <div class="score-container">0</div>
-        <div class="best-container">0</div>
-      </div>
+    <div class="container">
+        <div class="heading">
+            <h1 class="title">2048</h1>
+            <div class="scores-container">
+                <div class="score-container">0</div>
+                <div class="best-container">0</div>
+            </div>
+        </div>
+        <p class="game-intro">Join the numbers and get to the <strong>2048 tile!</strong></p>
+
+        <div class="game-container">
+            <div class="game-message">
+                <p></p>
+                <div class="lower">
+                    <a class="keep-playing-button">Keep going</a>
+                    <a class="retry-button">Try again</a>
+                </div>
+            </div>
+
+            <div class="grid-container">
+                <div class="grid-row">
+                    <div class="grid-cell">1</div>
+                    <div class="grid-cell">2</div>
+                    <div class="grid-cell">3</div>
+                    <div class="grid-cell">4</div>
+                </div>
+                <div class="grid-row">
+                    <div class="grid-cell">Q</div>
+                    <div class="grid-cell">W</div>
+                    <div class="grid-cell">E</div>
+                    <div class="grid-cell">R</div>
+                </div>
+                <div class="grid-row">
+                    <div class="grid-cell">A</div>
+                    <div class="grid-cell">S</div>
+                    <div class="grid-cell">D</div>
+                    <div class="grid-cell">F</div>
+                </div>
+                <div class="grid-row">
+                    <div class="grid-cell">Z</div>
+                    <div class="grid-cell">X</div>
+                    <div class="grid-cell">C</div>
+                    <div class="grid-cell">V</div>
+                </div>
+            </div>
+
+            <div class="tile-container">
+
+            </div>
+        </div>
+
+        <p class="game-explanation">
+            <strong class="important">How to win:</strong>
+        </p>
+        <p>
+            This is pretty quick on my computer, but it might be very slow on yours. Too bad.
+        </p>
+        <p>
+            Open another browser window with the <a target="_blank" href="http://gabrielecirulli.github.io/2048/">real game</a>.
+        </p>
+        <p>
+            In this window, use the following grid on your keyboard to increment the tile values so that they look like your real game:
+        </p>
+        <p>
+            <code>
+                1 2 3 4<br />
+                Q W E R<br />
+                A S D F<br />
+                Z X C V<br />
+            </code>
+        </p>
+        <p>
+            Then press <strong class="important">B</strong> to calculate your best move.
+        </p>
+        <p>
+            You can use your arrow keys as usual to move tiles up, down, left, and right, but the game will not place a random tile for you automatically. You can instead use the same keyboard grid to add the new 2 or 4 tile that your real game added, and press B again to calculate the next move.
+        </p>
+        <p>
+            It would take forever to do this for a whole game. Instead, you should play your real game until you are close to losing (only a couple empty tiles), use this coach until you have no risk of losing (lots of empty tiles), refresh this page, rinse, and repeat.
+        </p>
+        <p>
+            This is much easier to do if you can fit both windows on the screen at the same time. Put the real game on the right to make your keyboard align better.
+        </p>
+        <hr>
+        <p>
+            <strong class="important">How to play:</strong> Use your <strong>arrow keys</strong> to move the tiles. When two tiles with the same number touch, they <strong>merge into one!</strong>
+        </p>
+        <hr />
+        <p>
+            <strong class="important">Note:</strong> This site is the official version of 2048. You can play it on your phone via <a href="http://git.io/2048">http://git.io/2048.</a> All other apps or sites are derivatives or fakes, and should be used with caution.
+        </p>
+        <hr>
+        <p>
+            Created by <a href="http://gabrielecirulli.com" target="_blank">Gabriele Cirulli.</a> Based on <a href="https://itunes.apple.com/us/app/1024!/id823499224" target="_blank">1024 by Veewo Studio</a> and conceptually similar to <a href="http://asherv.com/threes/" target="_blank">Threes by Asher Vollmer.</a>
+        </p>
     </div>
-    <p class="game-intro">Join the numbers and get to the <strong>2048 tile!</strong></p>
 
-    <div class="game-container">
-      <div class="game-message">
-        <p></p>
-        <div class="lower">
-	        <a class="keep-playing-button">Keep going</a>
-          <a class="retry-button">Try again</a>
-        </div>
-      </div>
-
-      <div class="grid-container">
-        <div class="grid-row">
-          <div class="grid-cell">1</div>
-          <div class="grid-cell">2</div>
-          <div class="grid-cell">3</div>
-          <div class="grid-cell">4</div>
-        </div>
-        <div class="grid-row">
-          <div class="grid-cell">Q</div>
-          <div class="grid-cell">W</div>
-          <div class="grid-cell">E</div>
-          <div class="grid-cell">R</div>
-        </div>
-        <div class="grid-row">
-          <div class="grid-cell">A</div>
-          <div class="grid-cell">S</div>
-          <div class="grid-cell">D</div>
-          <div class="grid-cell">F</div>
-        </div>
-        <div class="grid-row">
-          <div class="grid-cell">Z</div>
-          <div class="grid-cell">X</div>
-          <div class="grid-cell">C</div>
-          <div class="grid-cell">V</div>
-        </div>
-      </div>
-
-      <div class="tile-container">
-
-      </div>
-    </div>
-
-    <p class="game-explanation">
-      <strong class="important">How to play:</strong> Use your <strong>arrow keys</strong> to move the tiles. When two tiles with the same number touch, they <strong>merge into one!</strong>
-    </p>
-    <p class="game-explanation">
-        <strong class="important">How to cheat:</strong> To change tiles' values, use 1-4 for the top row, Q-R for the 2nd row, A-F for the 3rd row, and Z-V for the 4th row.
-    </p>
-    <hr>
-    <p>
-    <strong class="important">Note:</strong> This site is the official version of 2048. You can play it on your phone via <a href="http://git.io/2048">http://git.io/2048.</a> All other apps or sites are derivatives or fakes, and should be used with caution.
-    </p>
-    <hr>
-    <p>
-    Created by <a href="http://gabrielecirulli.com" target="_blank">Gabriele Cirulli.</a> Based on <a href="https://itunes.apple.com/us/app/1024!/id823499224" target="_blank">1024 by Veewo Studio</a> and conceptually similar to <a href="http://asherv.com/threes/" target="_blank">Threes by Asher Vollmer.</a>
-    </p>
-  </div>
-
-  <script src="js/animframe_polyfill.js"></script>
-  <script src="js/keyboard_input_manager.js"></script>
-  <script src="js/html_actuator.js"></script>
-  <script src="js/grid.js"></script>
-  <script src="js/tile.js"></script>
-  <script src="js/local_score_manager.js"></script>
-  <script src="js/game_manager.js"></script>
-  <script src="js/application.js"></script>
+    <script src="js/animframe_polyfill.js"></script>
+    <script src="js/keyboard_input_manager.js"></script>
+    <script src="js/html_actuator.js"></script>
+    <script src="js/grid.js"></script>
+    <script src="js/tile.js"></script>
+    <script src="js/local_score_manager.js"></script>
+    <script src="js/game_manager.js"></script>
+    <script src="js/application.js"></script>
 </body>
 </html>
